@@ -1,179 +1,124 @@
 import Image from "next/image";
-import { getDictionary } from "../i18n/dictionaries";
-import { Lang, languages } from "../i18n/config";
+import { getDictionary } from "@/app/i18n/dictionaries"; 
+import { Lang, languages } from "@/app/i18n/config"; 
+
 import LanguageSwitcher from "@/components/LanguageSwitcher";
+import { ThemeToggle } from "@/components/ThemeToggle"; 
+import { ExperienceItem } from "@/components/Cards/ExperienceItem";
+import { EducationCard } from "@/components/Cards/EducationCard";
+import { ToolsCard } from "@/components/Cards/ToolsCard";
+import { LanguagesCard } from "@/components/Cards/LanguagesCard";
+import { PortfolioCard } from "@/components/Cards/PortfolioCard";
+import { DetailsCard } from "@/components/Cards/DetailsCard";
 
 export async function generateStaticParams() {
   return languages.map((lang) => ({ lang }));
 }
 
-export default async function Home({
-  params,
-}: {
-  params: Promise<{ lang: Lang }>;
-}) {
+// Sección de introducción (Avatar, Bio, Intereses)
+const IntroSection = ({ dict }: { dict: any }) => (
+  <>
+    {/* Avatar */}
+    <div className="col-span-12 lg:col-span-3 lg:row-span-2 bg-foreground rounded-2xl overflow-hidden flex items-center justify-center p-8">
+      <Image
+        src="/avatar.jpg"
+        alt="avatar"
+        width={300}
+        height={300}
+        className="w-full h-auto object-cover rounded-2xl"
+        priority
+      />
+    </div>
+
+    {/* Bio */}
+    <div className="col-span-12 lg:col-span-9 rounded-2xl bg-foreground p-8 flex items-center">
+      <p className="text-primary text-base sm:text-lg lg:text-xl leading-relaxed font-normal">
+        {dict.intro}
+      </p>
+    </div>
+
+    {/* Intereses */}
+    <div className="col-span-12 lg:col-span-9 rounded-2xl bg-foreground p-6">
+      <ul className="flex flex-wrap items-center gap-4">
+        <li className="text-primary text-lg font-bold pr-4 border-r border-grey whitespace-nowrap">
+          {dict.sections.interests.title}
+        </li>
+        {dict.sections.interests.items.map((item: string) => (
+          <li
+            key={item}
+            className="flex items-center bg-inner-bg rounded-lg text-primary text-sm font-medium px-4 py-2.5"
+          >
+            {item}
+          </li>
+        ))}
+      </ul>
+    </div>
+  </>
+);
+
+export default async function Home({ params }: { params: Promise<{ lang: Lang }> }) {
   const { lang } = await params;
   const dict = await getDictionary(lang);
 
+  // Datos de herramientas
+  const designToolsData = [
+    { label: 'Ai', bgColor: 'bg-[#330000]', textColor: 'text-[#FF9A00]' },
+    { label: 'Ps', bgColor: 'bg-[#001E36]', textColor: 'text-[#31A8FF]' },
+    { label: 'Id', bgColor: 'bg-[#49021F]', textColor: 'text-[#FF3366]' },
+    { label: 'Xd', bgColor: 'bg-[#470137]', textColor: 'text-[#FF61F6]' },
+  ];
+  const editingToolsData = [
+    { label: 'Ae', bgColor: 'bg-[#00005B]', textColor: 'text-[#9999FF]' },
+    { label: 'Pr', bgColor: 'bg-[#00005B]', textColor: 'text-[#9999FF]' },
+    { label: '🎨', bgColor: 'bg-gradient-to-br from-purple-500 to-pink-500', textColor: 'text-white' },
+  ];
+  const { freelance, meetzed } = dict.sections.experience;
+
   return (
-    <div className="font-sans flex justify-center">
+    <div className="font-sans flex justify-center min-h-screen bg-background text-primary transition-colors duration-300">
+      {/* Switches flotantes */}
       <LanguageSwitcher currentLang={lang} />
-      <main className="grid grid-cols-12 container mt-20 gap-10">
-        <span className="flex items-center justify-center col-span-3 row-span-2 bg-white rounded-2xl overflow-hidden">
-          <Image src="/avatar.jpg" alt="avatar" width={300} height={300} />
-        </span>
+      <ThemeToggle />
 
-        <p className="p-5 text-2xl text-white col-span-9 rounded-2xl bg-foreground">
-          {dict.intro}
-        </p>
+      {/* GRID PRINCIPAL */}
+      <main className="grid grid-cols-12 auto-rows-auto container max-w-7xl mt-10 mb-10 gap-5 p-4 sm:p-6 lg:p-0">
+        <IntroSection dict={dict} />
 
-        <ul className="flex items-center col-span-9 gap-4 p-5 rounded-2xl bg-foreground">
-          <li className="text-white text-lg font-bold border-r pr-4">
-            {dict.sections.interests.title}
-          </li>
-          {dict.sections.interests.items.map((item) => (
-            <li
-              key={item}
-              className="flex items-center bg-background rounded-lg text-white text-sm px-4 py-2"
-            >
-              {item}
-            </li>
-          ))}
-        </ul>
+        {/* Experiencia - 2 columnas */}
+        <div className="col-span-12 lg:col-span-6">
+          <ExperienceItem {...freelance} />
+        </div>
+        <div className="col-span-12 lg:col-span-6">
+          <ExperienceItem {...meetzed} />
+        </div>
 
-        <article className="col-span-6 rounded-2xl bg-foreground p-10">
-          <section className="flex items-center justify-between border-b border-b-grey pb-10">
-            <header className="flex flex-col">
-              <h3 className="text-2xl font-bold text-white">
-                {dict.sections.experience.freelance.title}
-              </h3>
-              <p className="text-grey text-sm">
-                {dict.sections.experience.freelance.role}
-              </p>
-            </header>
-            <span className="bg-background rounded-lg text-white text-sm p-4">
-              {dict.sections.experience.freelance.period}
-            </span>
-          </section>
-          <ul className="list-disc list-inside text-white text-sm mt-6">
-            {dict.sections.experience.freelance.bullets.map((b) => (
-              <li key={b}>{b}</li>
-            ))}
-          </ul>
-        </article>
+        {/* COLUMNA IZQUIERDA: Herramientas (3 filas) */}
+        <div className="col-span-12 lg:col-span-6">
+          <ToolsCard title={dict.sections.designTools} tools={designToolsData} />
+        </div>
 
-        <article className="col-span-6 rounded-2xl bg-foreground p-10">
-          <section className="flex items-center justify-between border-b border-b-grey pb-10">
-            <header className="flex flex-col">
-              <h3 className="text-2xl font-bold text-white">
-                {dict.sections.experience.meetzed.title}
-              </h3>
-              <p className="text-grey text-sm">
-                {dict.sections.experience.meetzed.role}
-              </p>
-            </header>
-            <span className="bg-background rounded-lg text-white text-sm p-4">
-              {dict.sections.experience.meetzed.period}
-            </span>
-          </section>
-          <ul className="list-disc list-inside text-white text-sm mt-6">
-            {dict.sections.experience.meetzed.bullets.map((b) => (
-              <li key={b}>{b}</li>
-            ))}
-          </ul>
-        </article>
+        {/* COLUMNA DERECHA: Educación (ocupa 3 filas completas) */}
+        <div className="col-span-12 lg:col-span-6 lg:row-span-3">
+          <EducationCard dict={dict} />
+        </div>
 
-        <ul className="flex gap-4 items-center col-span-6 rounded-2xl bg-foreground p-10">
-          <li className="text-white text-xl font-bold border-r pr-4">
-            {dict.sections.designTools}
-          </li>
-          <li className="flex items-center bg-[#360300] rounded-lg font-bold text-[#da9f4c] text-xl px-4 py-2">
-            Ai
-          </li>
-          <li className="flex items-center bg-[#0b172a] rounded-lg font-bold text-[#74aaf2] text-xl px-4 py-2">
-            Ps
-          </li>
-          <li className="flex items-center bg-[#59051e] rounded-lg font-bold text-[#d84b6f] text-xl px-4 py-2">
-            Id
-          </li>
-          <li className="flex items-center bg-[#480d30] rounded-lg font-bold text-[#de6ff0] text-xl px-4 py-2">
-            Xd
-          </li>
-        </ul>
+        <div className="col-span-12 lg:col-span-6">
+          <ToolsCard title={dict.sections.editingTools} tools={editingToolsData} />
+        </div>
 
-        <section className="flex flex-col gap-4 items-center col-span-6 row-span-3 rounded-2xl bg-foreground p-10">
-          <article className="flex items-center justify-between w-full border-b border-b-grey pb-8">
-            <span className="flex flex-col">
-              <h2 className="text-white text-3xl font-bold">
-                {dict.sections.education.highSchool.title}
-              </h2>
-              <p className="text-grey text-lg">
-                {dict.sections.education.highSchool.field}
-              </p>
-              <p className="text-grey text-sm">
-                {dict.sections.education.highSchool.location}
-              </p>
-            </span>
-            <span className="bg-background rounded-lg text-white text-sm p-4">
-              {dict.sections.education.highSchool.period}
-            </span>
-          </article>
+        <div className="col-span-12 lg:col-span-6">
+          <LanguagesCard dict={dict} />
+        </div>
 
-          <article className="flex items-center justify-between w-full border-b border-b-grey pb-8">
-            <span className="flex flex-col">
-              <h2 className="text-white text-3xl font-bold">
-                {dict.sections.education.diploma.title}
-              </h2>
-              <p className="text-grey text-lg">
-                {dict.sections.education.diploma.field}
-              </p>
-              <p className="text-grey text-sm">
-                {dict.sections.education.diploma.location}
-              </p>
-            </span>
-            <span className="bg-background rounded-lg text-white text-sm p-4">
-              {dict.sections.education.diploma.period}
-            </span>
-          </article>
+        {/* Portfolio - Barra horizontal completa */}
+        <div className="col-span-12">
+          <PortfolioCard dict={dict} />
+        </div>
 
-          <article className="flex items-center justify-between w-full">
-            <span className="flex flex-col">
-              <h2 className="text-white text-3xl font-bold">
-                {dict.sections.education.graduation.title}
-              </h2>
-              <p className="text-grey text-lg">
-                {dict.sections.education.graduation.field}
-              </p>
-              <p className="text-grey text-sm">
-                {dict.sections.education.graduation.location}
-              </p>
-            </span>
-            <span className="bg-background rounded-lg text-white text-sm p-4">
-              {dict.sections.education.graduation.period}
-            </span>
-          </article>
-        </section>
-
-        <ul className="flex gap-4 items-center col-span-6 rounded-2xl bg-foreground p-10">
-          <li className="text-white text-xl font-bold border-r pr-4">
-            {dict.sections.editingTools}
-          </li>
-          <li className="flex items-center bg-[#000155] rounded-lg font-bold text-[#a0a0f9] text-xl px-4 py-2">
-            Ae
-          </li>
-          <li className="flex items-center bg-[#02035e] rounded-lg font-bold text-[#9997f9] text-xl px-4 py-2">
-            Pr
-          </li>
-        </ul>
-
-        <ul className="flex gap-4 items-center col-span-6 rounded-2xl bg-foreground p-10">
-          <li className="text-white text-xl font-bold border-r pr-4">
-            {dict.sections.languages}
-          </li>
-          <li className="text-4xl">🇧🇴</li>
-          <li className="text-4xl">🇬🇧</li>
-          <li className="text-4xl">🇺🇸</li>
-        </ul>
+        {/* Details - Barra horizontal completa */}
+        <div className="col-span-12">
+          <DetailsCard dict={dict} />
+        </div>
       </main>
     </div>
   );
