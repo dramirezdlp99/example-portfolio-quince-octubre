@@ -14,6 +14,20 @@ type EducationItem = {
   period: string;
 };
 
+// --- NUEVOS TIPOS ---
+type PortfolioItem = {
+  title: string;
+};
+
+type DetailsItem = {
+  title: string;
+  age: string;
+  email: string;
+  phone: string;
+  location: string;
+};
+// --------------------
+
 export type Dictionary = {
   intro: string;
   sections: {
@@ -27,6 +41,10 @@ export type Dictionary = {
     };
     editingTools: string;
     languages: string;
+    // --- AÑADIDO: PORTFOLIO & DETAILS ---
+    portfolio: PortfolioItem;
+    details: DetailsItem;
+    // ------------------------------------
   };
   switcher: { label: string; es: string; en: string };
 };
@@ -86,6 +104,19 @@ const dictionaries: Record<Lang, Dictionary> = {
       },
       editingTools: "Herramientas de edición",
       languages: "Idiomas",
+      
+      // --- AÑADIDO: Textos en ESPAÑOL ---
+      portfolio: {
+        title: "Portafolio",
+      },
+      details: {
+        title: "Detalles",
+        age: "26 años",
+        email: "sunil@freelancer.com",
+        phone: "+91 9890062055",
+        location: "India",
+      },
+      // ---------------------------------
     },
     switcher: { label: "Idioma", es: "Español", en: "Inglés" },
   },
@@ -143,6 +174,19 @@ const dictionaries: Record<Lang, Dictionary> = {
       },
       editingTools: "Editing Tools",
       languages: "Languages",
+      
+      // --- AÑADIDO: Textos en INGLÉS ---
+      portfolio: {
+        title: "Portfolio",
+      },
+      details: {
+        title: "Details",
+        age: "26 years",
+        email: "sunil@freelancer.com",
+        phone: "+91 9890062055",
+        location: "India",
+      },
+      // ---------------------------------
     },
     switcher: { label: "Language", es: "Spanish", en: "English" },
   },

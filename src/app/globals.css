@@ -1,76 +1,96 @@
-@import 'tailwindcss/base';
-@import 'tailwindcss/components';
-@import 'tailwindcss/utilities';
+/* --- Tailwind Imports --- */
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
 
-/* ---------------------------------------------------- */
-/* 1. Definición de Variables CSS (Modo Claro - Default) */
-/* ---------------------------------------------------- */
-:root {
-  /* Fondo general */
-  --color-background: #ffffff; 
-  /* Fondo principal para cards (foreground del código original) */
-  --color-foreground: #1d1d1d; 
-  /* Texto principal y bordes de contraste (White del modo dark) */
-  --color-text-primary: #1d1d1d; 
-  /* Texto secundario (Grey) */
-  --color-text-secondary: #757575; 
-  /* Fondo para elementos internos (ej. botones de interés, periodos) */
-  --color-card-inner-bg: #f3f4f6;
-}
+/* --- Variables personalizadas --- */
+@layer base {
+  :root {
+    /* MODO OSCURO por defecto */
+    --color-background: #0a0a0a;
+    --color-foreground: #1c1c1c;
+    --color-inner-bg: #2a2a2a;
+    --color-text-primary: #ffffff;
+    --color-grey: #3a3a3a;
+    --color-text-secondary: #999999;
 
-/* ---------------------------------------------------- */
-/* 2. Sobreescritura de Variables (Modo Oscuro) */
-/* ---------------------------------------------------- */
-/* La clase 'dark' se aplica típicamente al <html> o <body> */
-.dark {
-  /* Fondo general */
-  --color-background: #000000;
-  /* Fondo principal para cards (foreground del código original) */
-  --color-foreground: #1c1c1c; /* Ligeramente más claro que el fondo para contraste */
-  /* Texto principal y bordes de contraste */
-  --color-text-primary: #ffffff;
-  /* Texto secundario (Grey) */
-  --color-text-secondary: #aaaaaa;
-  /* Fondo para elementos internos (ej. botones de interés, periodos) */
-  --color-card-inner-bg: #333333;
-}
-
-/* ---------------------------------------------------- */
-/* 3. Estilos Globales y Mapeo de Clases */
-/* ---------------------------------------------------- */
-
-/* Aplica el fondo a la etiqueta body y configura la fuente */
-body {
-  /* Usamos la variable para el background global */
-  background-color: var(--color-background);
-  /* El color del texto base */
-  color: var(--color-text-primary); 
-  font-family: Arial, Helvetica, sans-serif;
-  transition: background-color 0.3s ease; /* Transición para un cambio de tema suave */
-}
-
-/*
-  Mapeo de Clases de Tailwind (Debería ir en tailwind.config.js,
-  pero definimos las variables aquí para asegurar que las clases
-  como bg-foreground y text-grey funcionen si se extienden en la config).
-
-  Si NO has configurado tailwind.config.js para usar estas variables,
-  deberás hacerlo. Asumiendo que SÍ lo hiciste para usar:
-  bg-foreground, bg-background, text-white, text-grey, bg-background (para inner-bg)
-*/
-
-/*
-  Ejemplo de cómo debería verse la configuración en tu tailwind.config.js
-  para que el código de los componentes funcione directamente:
-
-  theme: {
-    extend: {
-      colors: {
-        'background': 'var(--color-background)',
-        'foreground': 'var(--color-foreground)',
-        'white': 'var(--color-text-primary)', // Usado para h3, span de periodo
-        'grey': 'var(--color-text-secondary)', // Usado para p
-      }
-    }
+    --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   }
-*/
+
+  /* Modo claro - Sobrescribe cuando NO tiene clase .dark */
+  html:not(.dark) {
+    --color-background: #e8e8e8;
+    --color-foreground: #c5c5c5;
+    --color-inner-bg: #3131315e;
+    --color-text-primary: #000000;
+    --color-grey: #d0d0d0;
+    --color-text-secondary: #000000;
+  }
+
+  body {
+    font-family: var(--font-primary);
+    background-color: var(--color-background);
+    color: var(--color-text-primary);
+    transition: background-color 0.3s ease, color 0.3s ease;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+/* --- Clases de utilidad personalizadas --- */
+@layer utilities {
+  .bg-background {
+    background-color: var(--color-background);
+  }
+
+  .bg-foreground {
+    background-color: var(--color-foreground);
+  }
+
+  .bg-inner-bg {
+    background-color: var(--color-inner-bg);
+  }
+
+  .text-primary {
+    color: var(--color-text-primary);
+  }
+
+  .text-grey {
+    color: var(--color-text-secondary);
+  }
+
+  .border-grey {
+    border-color: var(--color-grey);
+  }
+
+  .border-r-grey {
+    border-right-color: var(--color-grey);
+  }
+
+  .border-b-grey {
+    border-bottom-color: var(--color-grey);
+  }
+}
+
+/* --- Scrollbar personalizado --- */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-background);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-grey);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555555;
+}
