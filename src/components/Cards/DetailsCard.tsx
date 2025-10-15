@@ -13,7 +13,17 @@ const DetailItem: React.FC<DetailItemProps> = ({ value, icon }) => (
 );
 
 interface DetailsCardProps {
-  dict: any;
+  dict: {
+    sections: {
+      details: {
+        title: string;
+        age: string;
+        email: string;
+        phone: string;
+        location: string;
+      };
+    };
+  };
 }
 
 export const DetailsCard: React.FC<DetailsCardProps> = ({ dict }) => {

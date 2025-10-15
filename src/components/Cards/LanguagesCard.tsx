@@ -1,11 +1,14 @@
 import React from 'react';
 
 interface LanguagesCardProps {
-  dict: any;
+  dict: {
+    sections: {
+      languages: string;
+    };
+  };
 }
 
 export const LanguagesCard: React.FC<LanguagesCardProps> = ({ dict }) => {
-  // Banderas según la imagen original (India, UK, USA)
   const flags = ['🇮🇳', '🇬🇧', '🇺🇸']; 
 
   return (

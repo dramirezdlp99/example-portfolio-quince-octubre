@@ -8,7 +8,13 @@ interface PortfolioItemData {
 }
 
 interface PortfolioCardProps {
-  dict: any;
+  dict: {
+    sections: {
+      portfolio: {
+        title: string;
+      };
+    };
+  };
 }
 
 export const PortfolioCard: React.FC<PortfolioCardProps> = ({ dict }) => {

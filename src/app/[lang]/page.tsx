@@ -15,8 +15,66 @@ export async function generateStaticParams() {
   return languages.map((lang) => ({ lang }));
 }
 
+// Tipo completo para el diccionario
+interface DictType {
+  intro: string;
+  sections: {
+    interests: {
+      title: string;
+      items: string[];
+    };
+    experience: {
+      freelance: {
+        title: string;
+        role: string;
+        period: string;
+        bullets: string[];
+      };
+      meetzed: {
+        title: string;
+        role: string;
+        period: string;
+        bullets: string[];
+      };
+    };
+    designTools: string;
+    editingTools: string;
+    education: {
+      highSchool: {
+        title: string;
+        field: string;
+        location: string;
+        period: string;
+      };
+      diploma: {
+        title: string;
+        field: string;
+        location: string;
+        period: string;
+      };
+      graduation: {
+        title: string;
+        field: string;
+        location: string;
+        period: string;
+      };
+    };
+    languages: string;
+    portfolio: {
+      title: string;
+    };
+    details: {
+      title: string;
+      age: string;
+      email: string;
+      phone: string;
+      location: string;
+    };
+  };
+}
+
 // Sección de introducción (Avatar, Bio, Intereses)
-const IntroSection = ({ dict }: { dict: any }) => (
+const IntroSection = ({ dict }: { dict: DictType }) => (
   <>
     {/* Avatar */}
     <div className="col-span-12 lg:col-span-3 lg:row-span-2 bg-foreground rounded-2xl overflow-hidden flex items-center justify-center p-8">

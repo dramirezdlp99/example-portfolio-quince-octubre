@@ -28,7 +28,30 @@ const EducationItem: React.FC<EducationItemProps> = ({ title, field, location, p
 );
 
 interface EducationCardProps {
-  dict: any;
+  dict: {
+    sections: {
+      education: {
+        highSchool: {
+          title: string;
+          field: string;
+          location: string;
+          period: string;
+        };
+        diploma: {
+          title: string;
+          field: string;
+          location: string;
+          period: string;
+        };
+        graduation: {
+          title: string;
+          field: string;
+          location: string;
+          period: string;
+        };
+      };
+    };
+  };
 }
 
 export const EducationCard: React.FC<EducationCardProps> = ({ dict }) => {

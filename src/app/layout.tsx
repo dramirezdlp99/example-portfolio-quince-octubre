@@ -1,15 +1,18 @@
 import './globals.css';
 import { ThemeToggle } from '@/components/ThemeToggle';
 
+export const metadata = {
+  title: 'Portfolio - Sunil Kumar',
+  description: 'Self-taught logo/brand designer with 4+ years of experience',
+};
+
 export default function RootLayout({
   children,
-  params,
 }: {
   children: React.ReactNode;
-  params: { lang: string };
 }) {
   return (
-    <html lang={params.lang} className="dark" suppressHydrationWarning>
+    <html lang="es" suppressHydrationWarning>
       <body className="bg-background text-primary">
         {children}
         <ThemeToggle />
